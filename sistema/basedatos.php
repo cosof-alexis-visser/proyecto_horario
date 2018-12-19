@@ -20,37 +20,47 @@
 
 class BaseDatos extends PDO{
     
-    private static $_instancia;
-    private static $_consulta;
+    private $_conexion;
+    private $_consulta;
     
     public function __construct(){
         try{            
-            require_once "configuracion.php";        
-            parent::__construct(_BD_MOTOR_.":host="._BD_HOST_";db_name="._BD_NAME_.";charset="._BD_CHARSET_,_BD_USER_,_BD_PASS_);
-            
+            require_once "configuracion.php";            
+            parent::__construct(_BD_MOTOR_.":host="._BD_HOST_.";dbname="._BD_NAME_.";charset="._BD_CHARSET_,_BD_USER_,_BD_PASS_);            
         }catch(PDOException $error){
             die($error->getMessage());
         }
         
-    }
-    
+    }    
     
     /*
      *****************************************************
-     * Metodo      : instanciar
-     * Descripción : Crea una instancia o conexión con la base de datos sí es que no existe
+     * Metodo      : conectar
+     * Descripción : Crea una conexión con la base de datos sí es que no existe
      * @author     : Alexis Visser <alex_vaiser@hotmail.com>
      * creado      : 17-12-2018
-     * @return     : object
      ******************************************************
      */    
-    public static function instanciar(){
-        if(self::$_instancia){
-            return self::$_instancia;
-        }else{
-            self::$_instancia = new BaseDatos();
-            return self::$_instancia;
+    protected function conectar(){
+        if(!$this->_conexion){            
+           $this->_conexion = new BaseDatos; 
         }
+    }    
+    
+    /*
+     *****************************************************
+     * Metodo      : conectado
+     * Descripción : Verifica la existencia de una conexion
+     * @author     : Alexis Visser <alex_vaiser@hotmail.com>
+     * creado      : 18-12-2018
+     * @return     : boolean 
+     ******************************************************
+     */
+    public function conectado(){
+        if($this->_conexion){
+           return true; 
+        }
+        return false;
     }
     
     /*
@@ -60,34 +70,31 @@ class BaseDatos extends PDO{
      * @author     : Alexis Visser <alex_vaiser@hotmail.com>
      * creado      : 17-12-2018
      * @param      : String $query, array $params
-     * @return     : object static $_instancia
      ******************************************************
      */
     public function ejecutarConsulta($query,$params = array()){
-        try{
-            //Validaciones
+        try{            
             if(!is_array($params)){
-                throw new Exception("Params no es un arreglo como parámetros");
+                throw new Exception("Params no es un arreglo");
             }
             if(!is_string($query)){
                throw new Exception("Query no es una cadena"); 
             }
             if(is_null($query)){
                 throw new Exception("Query es nulo"); 
+            }    
+            
+            if(!$this->conectado()){
+                $this->conectar();
             }
             
-            if(!self::$_instancia){
-                $this->instanciar();
-            }
-            
-            self::$_instancia->prepare($SQL);
+            $this->_consulta = $this->_conexion->prepare($query);
             
             if(count($params) > 0){
-                self::$_consulta = self::$_instancia->execute($params);
+                $this->_consulta->execute($params);
             }else{
-                self::$_consulta = self::$_instancia->execute();
-            }
-            
+                $this->_consulta->execute();
+            }            
         }catch(Exception $error){
             die($error->getMessage());   
         }
@@ -99,11 +106,11 @@ class BaseDatos extends PDO{
      * Descripción : indica sí la consulta realizó cambio o no en la base de datos
      * @author     : Alexis Visser <alex_vaiser@hotmail.com>
      * creado      : 18-12-2018    
-     * @return     : bool 
+     * @return     : boolean 
      ******************************************************
      */    
     public function transaccionRealizada(){
-		return self::$consulta->rowCount() > 0;
+		return $this->_consulta->rowCount() > 0;
 	}
     
      /*
@@ -116,15 +123,15 @@ class BaseDatos extends PDO{
      ******************************************************
      */
     public function getAllResultados(){
-        $datos      = self::$consulta->fetchAll(PDO::FETCH_OBJ);
+        $datos      = $this->_consulta->fetchAll(PDO::FETCH_OBJ);
         $resultados = array();
         $i          = 0; 
         foreach($datos as $fila){
-            $resultados['row_'.$i] = (object) $fila;
+            $resultados['fila_'.$i] = (object) $fila;
             $i++;
         }
         
-        return $resultados;
+        return (object)$resultados;
     }
     
 }
