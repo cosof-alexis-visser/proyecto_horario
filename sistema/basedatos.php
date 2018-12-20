@@ -56,7 +56,7 @@ class BaseDatos extends PDO{
      * @return     : boolean 
      ******************************************************
      */
-    public function conectado(){
+    protected function conectado(){
         if($this->_conexion){
            return true; 
         }
