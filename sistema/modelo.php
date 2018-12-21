@@ -31,6 +31,7 @@ class Modelo extends BaseDatos{
      ******************************************************
      */
     public function insertar($arrDatos,$_tabla){
+       require_once("mensaje.php");
        try{        
             if(!is_array($arrDatos)){
                throw new Exception("Debe ingresar un arreglo de datos en el primer parámetro");  
@@ -67,8 +68,12 @@ class Modelo extends BaseDatos{
             
             $this->ejecutarConsulta($query,$valores);
            
+            if($this->transaccionRealizada()){
+                Mensaje::enviar("La operación se ha realizado con éxito");
+            }
+           
        }catch(Exception $e){
-           die($e->getMessage());
+           Mensaje::enviar($e->getMessage());
        }
         
     }
@@ -82,6 +87,7 @@ class Modelo extends BaseDatos{
      ******************************************************
      */
     public function insertarMultiple($arrDatos,$_tabla){
+        require_once("mensaje.php");
         try{ 
            if(!is_array($arrDatos)){
                throw new Exception("Debe ingresar un arreglo de datos en el primer parámetro");  
@@ -97,7 +103,7 @@ class Modelo extends BaseDatos{
             
             if(!is_string($_tabla)){
                 throw new Exception("El segundo parámetro debe ser una cadena");
-            
+            }
             
             $claves     = null;
             $str_claves = null;
@@ -145,16 +151,21 @@ class Modelo extends BaseDatos{
             
             $this->ejecutarConsulta($query,$valores);
             
+            if($this->transaccionRealizada()){
+                Mensaje::enviar("La operación se ha realizado con éxito");
+            }
+            
         }catch(Exception $e){
-           die($e->getMessage()); 
-        }
-    }
+           Mensaje::enviar($e->getMessage()); 
+        }    
+    }    
+    
     
 }
 
     
     
-    //Ejemplo de insercion multiple
+//Ejemplo de insert
 $arr = array(
     array(
       "tipo" => "probando1"  
@@ -170,3 +181,5 @@ $arr = array(
 $m = new Modelo;
 
 $m->insertarMultiple($arr,"tb_clasificaciones_insumo");
+
+echo Mensaje::recibir();
