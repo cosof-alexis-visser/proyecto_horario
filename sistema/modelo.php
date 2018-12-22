@@ -18,9 +18,7 @@
 ********************************************************************************************************************
 **/
 
-require_once("basedatos.php");
-
-class Modelo extends BaseDatos{
+abstract class Modelo extends BaseDatos{
     
     /*
      *****************************************************
@@ -30,8 +28,7 @@ class Modelo extends BaseDatos{
      * creado      : 17-12-2018
      ******************************************************
      */
-    public function insertar($arrDatos,$_tabla){
-       require_once("mensaje.php");
+    public function insertar($arrDatos,$_tabla){      
        try{        
             if(!is_array($arrDatos)){
                throw new Exception("Debe ingresar un arreglo de datos en el primer parámetro");  
@@ -86,8 +83,7 @@ class Modelo extends BaseDatos{
      * creado      : 18-12-2018
      ******************************************************
      */
-    public function insertarMultiple($arrDatos,$_tabla){
-        require_once("mensaje.php");
+    public function insertarMultiple($arrDatos,$_tabla){        
         try{ 
            if(!is_array($arrDatos)){
                throw new Exception("Debe ingresar un arreglo de datos en el primer parámetro");  
@@ -158,28 +154,77 @@ class Modelo extends BaseDatos{
         }catch(Exception $e){
            Mensaje::enviar($e->getMessage()); 
         }    
-    }    
+    }  
     
+     /*
+     *****************************************************
+     * Metodo      : obtenerTodos
+     * Descripción : obtiene todos los registros de una tabla
+     * @author     : Alexis Visser <alex_vaiser@hotmail.com>
+     * creado      : 21-12-2018
+     ******************************************************
+     */
+    public function obtenerTodos($_tabla,$_ordenar_por = null,$_orden_desc = false){        
+        try{
+            if(empty($_tabla)){
+                throw new Exception("Debe indicar la tabla desde donde obtener los datos");
+            }
+            
+            $query = "select * from $_tabla";
+            
+            if(!is_null($_ordenar_por)){
+                $query .= " order by $_ordenar_por";
+            }
+            
+            if($_orden_desc){
+                $query .= " $_orden_desc";
+            }
+            
+            $this->ejecutarConsulta($query);
+            
+            if($this->transaccionRealizada()){
+               $obj = $this->getAllResultados();    
+               return  (object) $obj; 
+            }else{
+               return null; 
+            }            
+        }catch(Exception $e){
+            Mensaje::enviar($e->getMessage()); 
+        }
+    }
     
-}
-
-    
-    
-//Ejemplo de insert
-$arr = array(
-    array(
-      "tipo" => "probando1"  
-    ),
-    array(
-      "tipo" => "probando2"  
-    ),
-    array(
-      "tipo" => "probando3"  
-    )
-);
-
-$m = new Modelo;
-
-$m->insertarMultiple($arr,"tb_clasificaciones_insumo");
-
-echo Mensaje::recibir();
+    /*
+     *****************************************************
+     * Metodo      : obtenerPorId
+     * Descripción : obtiene todos los registros de una tabla
+     * @author     : Alexis Visser <alex_vaiser@hotmail.com>
+     * creado      : 21-12-2018
+     ******************************************************
+     */
+    public function obtenerPorId($_tabla,$_id){        
+        try{
+            if(empty($_tabla)){
+                throw new Exception("Debe indicar la tabla desde donde obtener los datos");
+            }
+            
+            if(empty($_id)){
+                throw new Exception("Debe indicar el id para obtener los datos");
+            }
+            
+            $query = "select * from $_tabla where id = ?";
+            
+            $param = array($_id);
+            
+            $this->ejecutarConsulta($query,$param);
+            
+            if($this->transaccionRealizada()){
+               $obj = $this->getAllResultados();    
+               return  (object) $obj->fila_0; 
+            }else{
+               return null; 
+            }            
+        }catch(Exception $e){
+            Mensaje::enviar($e->getMessage()); 
+        }
+    }
+}                         
