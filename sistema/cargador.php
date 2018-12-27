@@ -21,6 +21,14 @@
 
 class Cargador{  
     
+    /*
+     *****************************************************
+     * Metodo      : autoloader
+     * Descripción : Método encargado de comunicar el controlador con la vista al momento de ingresar una url en el navegador
+     * @author     : Alexis Visser <alex_vaiser@hotmail.com>
+     * creado      : 26-12-2018     
+     ******************************************************
+     */ 
     public function autoloader(){
         try{
             $ruta   = realpath(dirname(__DIR__)).'/'._APP_.'/'._C_.'/';
@@ -56,17 +64,112 @@ class Cargador{
                  if(!method_exists($instancia,$params[1])){
                     throw new Exception("Método no definido en el controlador");   
                  }
-                 echo "<pre>".print_r($params,true)."</pre>";
+                 $metodo = (String) $params[1];
+                 $instancia->$metodo();
             }else{
 
             }
         }catch(Exception $e){
             die($e->getMessage());
         }      
+    }    
+    
+     /*
+     *****************************************************
+     * Metodo      : modelo
+     * Descripción : Método encargado de instanciar un modelo 
+     * @author     : Alexis Visser <alex_vaiser@hotmail.com>
+     * creado      : 26-12-2018 
+     * @param      : String $nombre
+     * @return     : Object 
+     ******************************************************
+     */ 
+    public function modelo($nombre){
+        try{
+             $clase       = strtolower($nombre);
+             $ruta_modelo = substr(realpath(dirname(__FILE__)),0,strpos(realpath(dirname(__FILE__)),"/sistema"))."\\"._APP_."\\"._M_."\\"._M_."_".$clase.".php";
+             echo $ruta_modelo;
+             if(!file_exists($ruta_modelo)){
+                 throw new Exception("Es imposible encontrar el modelo $clase"); 
+             }
+    
+            require_once($ruta_modelo); 
+            $strClass = ucwords($clase);
+            $clase    = $strClass;
+            
+            if(!class_exists($strClass)){
+                throw new Exception("El modelo $clase no se encuentra declarado");
+            }    
+            
+            return new $clase();
+            
+        }catch(Exception $e){
+             die($e->getMessage()); 
+        }    
     }
     
-    public function cargar($clase){
-        
+    /*
+     *****************************************************
+     * Metodo      : controlador
+     * Descripción : Método encargado de instanciar un controlador 
+     * @author     : Alexis Visser <alex_vaiser@hotmail.com>
+     * creado      : 26-12-2018 
+     * @param      : String $nombre
+     * @return     : Object 
+     ******************************************************
+     */ 
+     public function controlador($nombre){
+        try{
+             $clase            = strtolower($nombre);
+             $ruta_controlador = realpath(dirname(__FILE__))."/"._APP_."/"._C_."/"._C_."_".$clase.".php";
+             if(!(file_exists($ruta_controlador) and is_readable($ruta_controlador))){
+                 throw new Exception("Es imposible encontrar el controlador $clase"); 
+             }
+             
+            $strClass = ucwords($clase);
+            $clase    = $strClass;
+            
+            if(!class_exists($strClass)){
+                throw new Exception("El controlador $clase no se encuentra declarado");
+            }    
+            
+            return new $clase();
+            
+        }catch(Exception $e){
+             die($e->getMessage()); 
+        }    
+    }
+    
+    /*
+     *****************************************************
+     * Metodo      : vista
+     * Descripción : Método encargado de instanciar una vista 
+     * @author     : Alexis Visser <alex_vaiser@hotmail.com>
+     * creado      : 26-12-2018 
+     * @param      : String $nombre
+     * @return     : Object 
+     ******************************************************
+     */ 
+     public function vista($nombre){
+        try{
+             $clase            = strtolower($nombre);
+             $ruta_controlador = realpath(dirname(__FILE__))."/"._APP_."/"._V_."/"._V_."_".$clase.".php";
+             if(!(file_exists($ruta_controlador) and is_readable($ruta_controlador))){
+                 throw new Exception("Es imposible encontrar el controlador $clase"); 
+             }
+             
+            $strClass = ucwords($clase);
+            $clase    = $strClass;
+            
+            if(!class_exists($strClass)){
+                throw new Exception("El controlador $clase no se encuentra declarado");
+            }    
+            
+            return new $clase();
+            
+        }catch(Exception $e){
+             die($e->getMessage()); 
+        }    
     }
     
 }

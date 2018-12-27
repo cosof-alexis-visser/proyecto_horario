@@ -119,7 +119,7 @@ class BaseDatos extends PDO{
      * Descripción : Obtiene un listado de objetos extraidos de la base de datos
      * @author     : Alexis Visser <alex_vaiser@hotmail.com>
      * creado      : 18-12-2018    
-     * @return     : array  
+     * @return     : objects   
      ******************************************************
      */
     public function getAllResultados(){
