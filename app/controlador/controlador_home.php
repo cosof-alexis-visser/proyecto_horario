@@ -3,13 +3,13 @@
 ********************************************************************************************************************
 * Sistema       :    PROYECTO HORARIO
 *
-* Descripción   :    Controlador encargado de direccionar y validar una sesión iniciada de un usuario
+* Descripción   :    Controlador encargado de mostrar pantalla de entrada de sesión al usuario, combina varias plantillas para mostrar la vista inicial
 * 
 * @author       :    Alexis Visser
 *
 * @version      :    1.0
 *
-* @name         :    controlador_login.php
+* @name         :    controlador_home.php
 *
 * Creación      :    27-12-2018
 * 
@@ -17,18 +17,19 @@
 *
 ********************************************************************************************************************
 **/
-class Login extends Controlador{
+
+class Home extends Controlador{
     
-    protected $_modeloUsuario;
+   
     
     public function __construct(){
-        parent::__construct(); //Construyo un objeto padre
-        
-        //$this->_modeloUsuario = $this->cargar->modelo("usuario"); //Construyo un usuario
-        
+        parent::__construct(); //Construye un controlador padre       
     }
     
     public function index(){
-        echo "hola mundo";
+        
+        Vista::asignar("js1",$this->cargar->js("jquery-3.3.1.min"));
+       // Vista::asignar("js2",$this->cargar->js("bootstrap"));
+        $this->cargar->vista("maestra");
     }
 }

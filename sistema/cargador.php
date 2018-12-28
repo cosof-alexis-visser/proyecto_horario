@@ -1,5 +1,5 @@
 <?php
-
+if(!defined("_APP_NAME_")) die("No ha definido el nombre de la aplicación");
 /**
 ********************************************************************************************************************
 * Sistema       :    PROYECTO HORARIO
@@ -19,7 +19,15 @@
 ********************************************************************************************************************
 **/
 
-class Cargador{  
+class Cargador{
+    
+    private function convertAPPNAME(){         
+         
+         $arrAux = explode(' ',_APP_NAME_);
+         $strAux = implode('_',$arrAux);
+        
+         return strtolower($strAux);
+    }
     
     /*
      *****************************************************
@@ -31,13 +39,14 @@ class Cargador{
      */ 
     public function autoloader(){
         try{
-            $ruta   = realpath(dirname(__DIR__)).'/'._APP_.'/'._C_.'/';
-            $url    = $_SERVER['REQUEST_URI'];
-            $url    = substr($url,1);
-            $url    = substr($url,strpos($url,"/")+1);
-            $params = explode('/',$url);
-            $params = array_filter($params,'strlen');
-
+            $ruta       = realpath(dirname(__DIR__)).'/'._APP_.'/'._C_.'/';
+            $url        = $_SERVER['REQUEST_URI'];
+            $url        = substr($url,1);
+            $url        = substr($url,strpos($url,"/")+1);
+            $params     = explode('/',$url);
+            $params     = array_filter($params,'strlen');
+            $parametros = array();
+            
             if(count($params) > 0){ 
                  if(!isset($params[0])){
                      throw new Exception("Debe indicar un controlador en la ruta");
@@ -65,7 +74,16 @@ class Cargador{
                     throw new Exception("Método no definido en el controlador");   
                  }
                  $metodo = (String) $params[1];
-                 $instancia->$metodo();
+                
+                 if(count($params) > 2){
+                    for($i=2;$i<sizeof($params);$i++){
+                       $parametros[] = $params[$i]; 
+                    } 
+                    $strParametros = implode(',',$parametros); 
+                    $instancia->$metodo($strParametros); 
+                 }else{
+                    $instancia->$metodo(); 
+                 }                
             }else{
 
             }
@@ -86,10 +104,12 @@ class Cargador{
      */ 
     public function modelo($nombre){
         try{
-             $clase       = strtolower($nombre);
-             $ruta_modelo = substr(realpath(dirname(__FILE__)),0,strpos(realpath(dirname(__FILE__)),"/sistema"))."\\"._APP_."\\"._M_."\\"._M_."_".$clase.".php";
-             echo $ruta_modelo;
-             if(!file_exists($ruta_modelo)){
+            
+             $clase  = strtolower($nombre);
+             $strDirRaiz  = $this->convertAPPNAME();
+             $ruta_modelo = $_SERVER["DOCUMENT_ROOT"]."/".$strDirRaiz."/"._APP_."/"._M_."/"._M_."_".$clase.".php";
+             
+             if(!file_exists($ruta_modelo) and is_readable($ruta_controlador)){
                  throw new Exception("Es imposible encontrar el modelo $clase"); 
              }
     
@@ -104,7 +124,7 @@ class Cargador{
             return new $clase();
             
         }catch(Exception $e){
-             die($e->getMessage()); 
+            die($e->getMessage()); 
         }    
     }
     
@@ -121,7 +141,9 @@ class Cargador{
      public function controlador($nombre){
         try{
              $clase            = strtolower($nombre);
-             $ruta_controlador = realpath(dirname(__FILE__))."/"._APP_."/"._C_."/"._C_."_".$clase.".php";
+             $strDirRaiz       = $this->convertAPPNAME();
+             $ruta_controlador = $_SERVER["DOCUMENT_ROOT"]."/".$strDirRaiz."/"._APP_."/"._C_."/"._C_."_".$clase.".php";
+            
              if(!(file_exists($ruta_controlador) and is_readable($ruta_controlador))){
                  throw new Exception("Es imposible encontrar el controlador $clase"); 
              }
@@ -142,34 +164,51 @@ class Cargador{
     
     /*
      *****************************************************
-     * Metodo      : vista
+     * Metodo      : mostrar
      * Descripción : Método encargado de instanciar una vista 
      * @author     : Alexis Visser <alex_vaiser@hotmail.com>
      * creado      : 26-12-2018 
-     * @param      : String $nombre
-     * @return     : Object 
+     * @param      : String $nombre     
      ******************************************************
      */ 
      public function vista($nombre){
         try{
-             $clase            = strtolower($nombre);
-             $ruta_controlador = realpath(dirname(__FILE__))."/"._APP_."/"._V_."/"._V_."_".$clase.".php";
-             if(!(file_exists($ruta_controlador) and is_readable($ruta_controlador))){
-                 throw new Exception("Es imposible encontrar el controlador $clase"); 
+             $vista            = strtolower($nombre);
+             $strDirRaiz       = $this->convertAPPNAME();
+             $ruta_vista       = $_SERVER["DOCUMENT_ROOT"]."/".$strDirRaiz."/"._APP_."/"._V_."/"._V_."_".$vista.".php";
+            
+             if(!(file_exists($ruta_vista) and is_readable($ruta_vista))){
+                 throw new Exception("Es imposible cargar la vista $clase"); 
              }
              
-            $strClass = ucwords($clase);
-            $clase    = $strClass;
-            
-            if(!class_exists($strClass)){
-                throw new Exception("El controlador $clase no se encuentra declarado");
-            }    
-            
-            return new $clase();
+             require_once($ruta_vista);       
             
         }catch(Exception $e){
              die($e->getMessage()); 
         }    
+    }
+    
+    
+    public function js($nombre){
+        try{
+             $js               = strtolower($nombre);
+             $strDirRaiz       = $this->convertAPPNAME();
+             $ruta_js[0]       = $_SERVER["DOCUMENT_ROOT"]."/".$strDirRaiz."/librerias/js/".$js.".js";
+             $ruta_js[1]       = $_SERVER["DOCUMENT_ROOT"]."/".$strDirRaiz."/"._APP_."/"._V_."/js/".$js.".js";
+             
+             echo  $ruta_js[1]."\r\n";
+            //echo $_SERVER["SERVER_NAME"]."\r\n";
+             foreach($ruta_js AS $ruta){
+                if(file_exists($ruta)){
+                   return "<script src='$ruta' type='text/javascript'></script>";           
+                } 
+             }
+             
+             throw new Exception("La librería JavaScript indicada no existe");             
+            
+        }catch(Exception $e){
+             die($e->getMessage()); 
+        }
     }
     
 }

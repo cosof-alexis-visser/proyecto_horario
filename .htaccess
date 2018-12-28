@@ -1,2 +1,4 @@
 RewriteEngine on
 RewriteRule ^([a-z0-9_-]*)/*(.*)$  index.php
+
+
