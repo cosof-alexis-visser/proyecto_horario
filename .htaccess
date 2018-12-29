@@ -1,4 +1,7 @@
 RewriteEngine on
-RewriteRule ^([a-z0-9_-]*)/*(.*)$  index.php
-
+RewriteRule ^app/([A-Za-z0-9_-]*)\/*([A-Za-z0-9_-]*)$ index.php/ [L]
+RewriteRule ^libjs/(.*)$  librerias/js/$1 [L]
+RewriteRule ^appjs/(.*)$  app/vista/js/$1 [L]
+RewriteRule ^libcss/(.*)$ librerias/css/$1 [L]
+RewriteRule ^appcss/(.*)$  app/vista/css/$1 [L]
 

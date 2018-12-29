@@ -8,6 +8,9 @@ const _V_        = "vista";
 const _C_        = "controlador";
 const _M_        = "modelo";
 
+
+//echo $_SERVER["HTTP_HOST"];
+
 //importe de archivos de sistema
 require_once realpath(dirname(__FILE__))."/"._SYS_."/"."configuracion.php";
 require_once realpath(dirname(__FILE__))."/"._SYS_."/"."cargador.php";

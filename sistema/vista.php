@@ -6,7 +6,7 @@ abstract class Vista{
     protected static $_arrVar;
     
     
-   public static function asignar($variable=null,$valor=null){
+   public static function setVar($variable=null,$valor=null){
        self::$_arrVar[$variable] = $valor;       
    }
    
