@@ -2,9 +2,11 @@
 if(!defined("_APP_NAME_")) die("No ha definido el nombre de la aplicación");
 /**
 ********************************************************************************************************************
-* Sistema       :    PROYECTO HORARIO
+* Sistema       :    ALVISS FRAMEWORK
 *
-* Descripción   :    Clase en donde se creará la instancia  con la base de datos y proporcionará los métodos para la ejecución de consultas
+* Clase         :    BaseDatos
+*
+* Descripción   :    Contiene métodos para conectar con base de datos, ejecutar consultas y recuperar datos
 * 
 * @author       :    Alexis Visser
 *

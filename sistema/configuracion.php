@@ -5,7 +5,7 @@
 *
 * Descripción   :    Configuraciones del sistema
 * 
-* @author       :    Jose Castillo F. - Alexis Visser
+* @author       :    Alexis Visser
 *
 * @version      :    1.0
 *
@@ -34,3 +34,4 @@ const _SU_PASS_    = "administrador"; //Es la contraseña del super usuario
 
 
 //OTRAS CONFIGURACIONES
+const _APP_NAME_   = "proyecto horario";

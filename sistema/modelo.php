@@ -2,9 +2,11 @@
 if(!defined("_APP_NAME_")) die("No ha definido el nombre de la aplicación");
 /**
 ********************************************************************************************************************
-* Sistema       :    PROYECTO HORARIO
+* Sistema       :    ALVISS FRAMEWORK
 *
-* Descripción   :    Contiene métodos propios para interactuar con la base de datos
+* Clase         :    Modelo
+*
+* Descripción   :    Contiene métodos predeterminados DML para la manipulacón de base de datos
 * 
 * @author       :    Alexis Visser
 *

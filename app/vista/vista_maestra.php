@@ -5,9 +5,12 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width,initial-scale=1">
         <title><?php echo strtoupper(_APP_NAME_); ?></title>
-        <?php echo Vista::getVar("css1");?>  
-        <?php echo Vista::getVar("css2");?>  
-        <!--<link rel="stylesheet" href="css/base.css">-->     
+        <!-- Importación Librerías Base CSS -->
+        <?php 
+           foreach(Vista::getVar("css") AS $css){
+              echo $css; 
+           }           
+        ?>   
     </head>
     <body>
         <div class="container-fluid">
@@ -33,7 +36,10 @@
             </footer>
         </div>        
         <!-- Importación Librerías Base Javascript -->
-        <?php echo Vista::getVar("js1");?>
-        <?php echo Vista::getVar("js2");?>
+        <?php 
+            foreach(Vista::getVar("js") AS $js){
+                echo $js;
+            }
+        ?>
     </body>
 </html>

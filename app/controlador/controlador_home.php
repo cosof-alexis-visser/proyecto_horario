@@ -18,20 +18,25 @@
 ********************************************************************************************************************
 **/
 
-class Home extends Controlador{
-    
-   
+class Home extends Controlador{  
     
     public function __construct(){
         parent::__construct(); //Construye un controlador padre       
     }
     
-    public function index(){ 
-        Vista::setVar("css1",$this->cargar->css("bootstrap")); // A la variable "css1" Le asigno la carga del archivo css Bootstrap que posteriormente será leída por la vista maestra
-        Vista::setVar("css2",$this->cargar->css("base")); // A la variable "css1" Le asigno la carga del archivo css Bootstrap que posteriormente será leída por la vista maestra
-        Vista::setVar("js1",$this->cargar->js("jquery-3.3.1.min")); // A la variable "js1" Le asigno la carga del plugin js Jquery que posteriormente será leída por la vista maestra
-        Vista::setVar("js2",$this->cargar->js("bootstrap"));  // A la variable "js2" Le asigno la carga del plugin js Bootstrap que posteriormente será leída por la vista maestra
+    public function index(){
+        $css = array(
+           $this->cargar->css("bootstrap"),
+           $this->cargar->css("base")    
+        );
+        $js = array(
+           $this->cargar->js("jquery-3.3.1.min"),
+           $this->cargar->js("bootstrap")
+        );
         
-        $this->cargar->vista("maestra");//Cargo la vista maestra en la pantalla cuando este método sea llamado
+        Vista::adherir($css,"css"); 
+        Vista::adherir($js,"js");         
+        
+        $this->cargar->vista("maestra");
     }
 }

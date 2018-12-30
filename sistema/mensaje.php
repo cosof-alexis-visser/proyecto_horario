@@ -2,9 +2,11 @@
 if(!defined("_APP_NAME_")) die("No ha definido el nombre de la aplicación");
 /**
 ********************************************************************************************************************
-* Sistema       :    PROYECTO HORARIO
+* Sistema       :    ALVISS FRAMEWORK
 *
-* Descripción   :    Contiene métodos estaticos para emitir los mensajes de éxito y fallido
+* Clase         :    Mensaje
+*
+* Descripción   :    Contiene métodos para la emisión y recepción de mensajes
 * 
 * @author       :    Alexis Visser
 *

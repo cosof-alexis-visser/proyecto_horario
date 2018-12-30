@@ -2,9 +2,11 @@
 if(!defined("_APP_NAME_")) die("No ha definido el nombre de la aplicación");
 /**
 ********************************************************************************************************************
-* Sistema       :    PROYECTO HORARIO
+* Sistema       :    ALVISS FRAMEWORK
 *
-* Descripción   :    Contiene metodo de autocarga que servirá para la comunicación de controlador con la vista y modelo
+* Clase         :    Cargador
+*
+* Descripción   :    Contiene métodos para cargar vistas,controladores,modelos, js, css 
 * 
 * @author       :    Alexis Visser
 *
@@ -19,25 +21,7 @@ if(!defined("_APP_NAME_")) die("No ha definido el nombre de la aplicación");
 ********************************************************************************************************************
 **/
 
-class Cargador{
-    
-    private function url_existe($url){
-       $handle = @fopen($url, "r");
-       if ($handle == false){
-            return false;       
-       }
-       fclose($handle);
-       return true;
-    }
-    
-    private function convertAPPNAME(){         
-         
-         $arrAux = explode(' ',_APP_NAME_);
-         $strAux = implode('_',$arrAux);
-        
-         return strtolower($strAux);
-    }
-    
+class Cargador{     
     /*
      *****************************************************
      * Metodo      : autoloader
@@ -120,9 +104,10 @@ class Cargador{
      */ 
     public function modelo($nombre){
         try{
+             require_once("convertidor.php");
             
              $clase  = strtolower($nombre);
-             $strDirRaiz  = $this->convertAPPNAME();
+             $strDirRaiz  = Convertidor::convertirEspaciosEnGuionBajo(_APP_NAME_);
              $ruta_modelo = $_SERVER["DOCUMENT_ROOT"]."/".$strDirRaiz."/"._APP_."/"._M_."/"._M_."_".$clase.".php";
              
              if(!file_exists($ruta_modelo) and is_readable($ruta_controlador)){
@@ -156,8 +141,10 @@ class Cargador{
      */ 
      public function controlador($nombre){
         try{
+            require_once("convertidor.php");
+            
              $clase            = strtolower($nombre);
-             $strDirRaiz       = $this->convertAPPNAME();
+             $strDirRaiz       = Convertidor::convertirEspaciosEnGuionBajo(_APP_NAME_);
              $ruta_controlador = $_SERVER["DOCUMENT_ROOT"]."/".$strDirRaiz."/"._APP_."/"._C_."/"._C_."_".$clase.".php";
             
              if(!(file_exists($ruta_controlador) and is_readable($ruta_controlador))){
@@ -189,8 +176,10 @@ class Cargador{
      */ 
      public function vista($nombre){
         try{
+            require_once("convertidor.php");
+            
              $vista            = strtolower($nombre);
-             $strDirRaiz       = $this->convertAPPNAME();
+             $strDirRaiz       = Convertidor::convertirEspaciosEnGuionBajo(_APP_NAME_);
              $ruta_vista       = $_SERVER["DOCUMENT_ROOT"]."/".$strDirRaiz."/"._APP_."/"._V_."/"._V_."_".$vista.".php";
             
              if(!(file_exists($ruta_vista) and is_readable($ruta_vista))){
@@ -215,8 +204,11 @@ class Cargador{
      */
     public function js($nombre){
         try{
+             require_once("convertidor.php");
+             require_once("validar.php");
+            
              $js               = strtolower($nombre);
-             $strDirRaiz       = $this->convertAPPNAME();
+             $strDirRaiz       = Convertidor::convertirEspaciosEnGuionBajo(_APP_NAME_);
              $protocolo        = stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'http://';
              $ruta_base        = $_SERVER["DOCUMENT_ROOT"]."/".$strDirRaiz."/";
              $op               = 0;
@@ -225,7 +217,7 @@ class Cargador{
             
              foreach($ruta_js AS $ruta){
                 $op++;                
-                if($this->url_existe($ruta)){
+                if(Validar::existeURL($ruta)){
                    $ruta = $op == 1 ? "../../".substr($ruta,strlen($ruta_base),strlen($ruta)) : "../../".substr($ruta,strlen($ruta_base),strlen($ruta));
                    return "<script src='$ruta' type='text/javascript'></script>";           
                 } 
@@ -248,8 +240,11 @@ class Cargador{
      */
      public function css($nombre){
         try{
+            require_once("convertidor.php");
+            require_once("validar.php");
+            
              $css              = strtolower($nombre);
-             $strDirRaiz       = $this->convertAPPNAME();
+             $strDirRaiz       = Convertidor::convertirEspaciosEnGuionBajo(_APP_NAME_);
              $protocolo        = stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'http://';
              $ruta_base        = $_SERVER["DOCUMENT_ROOT"]."/".$strDirRaiz."/";
              $op               = 0;
@@ -258,7 +253,7 @@ class Cargador{
              
              foreach($ruta_css AS $ruta){
                 $op++;
-                if($this->url_existe($ruta)){                   
+                if(Validar::existeURL($ruta)){                   
                    $ruta = $op == 1 ? "../../".substr($ruta,strlen($ruta_base),strlen($ruta)) : "../../".substr($ruta,strlen($ruta_base),strlen($ruta));   
                    return "<link href='$ruta' type='text/css' rel='stylesheet'>";           
                 }                
