@@ -199,7 +199,7 @@ abstract class Modelo extends BaseDatos{
     /*
      *****************************************************
      * Metodo      : obtenerPorId
-     * Descripción : obtiene todos los registros de una tabla
+     * Descripción : obtiene un registro por id de una tabla
      * @author     : Alexis Visser <alex_vaiser@hotmail.com>
      * creado      : 21-12-2018
      ******************************************************

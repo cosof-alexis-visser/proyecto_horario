@@ -103,8 +103,7 @@ class Cargador{
      ******************************************************
      */ 
     public function modelo($nombre){
-        try{
-             require_once("convertidor.php");
+        try{             
             
              $clase  = strtolower($nombre);
              $strDirRaiz  = Convertidor::convertirEspaciosEnGuionBajo(_APP_NAME_);
@@ -140,8 +139,7 @@ class Cargador{
      ******************************************************
      */ 
      public function controlador($nombre){
-        try{
-            require_once("convertidor.php");
+        try{           
             
              $clase            = strtolower($nombre);
              $strDirRaiz       = Convertidor::convertirEspaciosEnGuionBajo(_APP_NAME_);
@@ -175,15 +173,14 @@ class Cargador{
      ******************************************************
      */ 
      public function vista($nombre){
-        try{
-            require_once("convertidor.php");
+        try{            
             
              $vista            = strtolower($nombre);
              $strDirRaiz       = Convertidor::convertirEspaciosEnGuionBajo(_APP_NAME_);
-             $ruta_vista       = $_SERVER["DOCUMENT_ROOT"]."/".$strDirRaiz."/"._APP_."/"._V_."/"._V_."_".$vista.".php";
+             $ruta_vista       = $_SERVER["DOCUMENT_ROOT"]."/".$strDirRaiz."/"._APP_."/"._V_."/maestras/maestra_".$vista.".php";
             
              if(!(file_exists($ruta_vista) and is_readable($ruta_vista))){
-                 throw new Exception("Es imposible cargar la vista $clase"); 
+                 throw new Exception("Es imposible cargar la vista $vista"); 
              }
              
              require_once($ruta_vista);       
@@ -203,9 +200,7 @@ class Cargador{
      ******************************************************
      */
     public function js($nombre){
-        try{
-             require_once("convertidor.php");
-             require_once("validar.php");
+        try{             
             
              $js               = strtolower($nombre);
              $strDirRaiz       = Convertidor::convertirEspaciosEnGuionBajo(_APP_NAME_);
@@ -239,9 +234,7 @@ class Cargador{
      ******************************************************
      */
      public function css($nombre){
-        try{
-            require_once("convertidor.php");
-            require_once("validar.php");
+        try{            
             
              $css              = strtolower($nombre);
              $strDirRaiz       = Convertidor::convertirEspaciosEnGuionBajo(_APP_NAME_);

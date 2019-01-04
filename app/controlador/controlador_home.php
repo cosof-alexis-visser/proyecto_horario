@@ -34,9 +34,11 @@ class Home extends Controlador{
            $this->cargar->js("bootstrap")
         );
         
-        Vista::adherir($css,"css"); 
-        Vista::adherir($js,"js");         
+        new Vista("adm");
         
-        $this->cargar->vista("maestra");
+        Vista::adherir($css,"css"); 
+        Vista::adherir($js,"js");                  
+        
+        $this->cargar->vista("adm");
     }
 }

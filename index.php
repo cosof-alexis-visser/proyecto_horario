@@ -9,18 +9,25 @@ const _C_        = "controlador";
 const _M_        = "modelo";
 
 
-//echo $_SERVER["HTTP_HOST"];
-
 //importe de archivos de sistema
 require_once realpath(dirname(__FILE__))."/"._SYS_."/"."configuracion.php";
+require_once realpath(dirname(__FILE__))."/"._SYS_."/"."convertidor.php";
+require_once realpath(dirname(__FILE__))."/"._SYS_."/"."validar.php";
 require_once realpath(dirname(__FILE__))."/"._SYS_."/"."cargador.php";
 require_once realpath(dirname(__FILE__))."/"._SYS_."/"."basedatos.php";
 require_once realpath(dirname(__FILE__))."/"._SYS_."/"."mensaje.php";
 require_once realpath(dirname(__FILE__))."/"._SYS_."/"."modelo.php";
 require_once realpath(dirname(__FILE__))."/"._SYS_."/"."controlador.php";
-require_once realpath(dirname(__FILE__))."/"._SYS_."/"."vista.php";
+require_once realpath(dirname(__FILE__))."/"._SYS_."/"."vista.php";            
 
-//Importe de archivos de la aplicacion
+$base =  substr(dirname(__FILE__),-strripos(dirname(__FILE__),'\\')-1);
+$app  =  Convertidor::convertirEspaciosEnGuionBajo(_APP_NAME_);
+
+
+if($base != $app){
+    die("La aplicación debe recibir el mismo nombre que el directorio base");
+}
+
 
 $redireccionador = new Cargador;
 $redireccionador->autoloader();
