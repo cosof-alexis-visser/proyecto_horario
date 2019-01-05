@@ -9,8 +9,6 @@
 		<link href='../../librerias/css/base.css' type='text/css' rel='stylesheet'>
 	</head>
 	<body>
-		<header class="enc-fondo enc-alt-anch">
-		</header>
 		<script src='../../librerias/js/jquery-3.3.1.min.js' type='text/javascript'></script>
 		<script src='../../librerias/js/bootstrap.js' type='text/javascript'></script>
 	</body>

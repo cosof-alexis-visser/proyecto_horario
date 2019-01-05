@@ -1,5 +1,5 @@
 <?php
-if(!defined("_APP_NAME_")) die("No ha definido el nombre de la aplicación");
+//if(!defined("_APP_NAME_")) die("No ha definido el nombre de la aplicación");
 /**
 ********************************************************************************************************************
 * Sistema       :    ALVISS FRAMEWORK

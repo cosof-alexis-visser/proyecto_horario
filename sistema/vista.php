@@ -1,5 +1,4 @@
 <?php
-if(!defined("_APP_NAME_")) die("No ha definido el nombre de la aplicación");
 /**
 ********************************************************************************************************************
 * Sistema       :    ALVISS FRAMEWORK
@@ -24,10 +23,31 @@ if(!defined("_APP_NAME_")) die("No ha definido el nombre de la aplicación");
 class Vista{
    
    protected static $_arrVar;    
+   public $creado;
     
-   public function __construct($nombre=null,$tipo="maestra"){
+   public function __construct($nombre = null,$opciones = array()){
        try{
-          if($tipo == "maestra"){              
+           /*
+            **************************************************************************
+            * tipo_vista = debería ser maestra o template
+            * header     = debería ser true o false
+            * menu       = debería incluir un arreglo con las páginas que se deberían visualizar
+            * footer     = debería ser un true o false
+            **************************************************************************
+            */
+           $paramdef   = array('tipo_vista','header','menu','footer');
+           $parametros = array_keys($opciones);
+           
+           if(!in_array('tipo_vista',$paramdef)){
+               $opciones['tipo_vista'] = null;
+           }
+           if(!in_array('header',$paramdef)){
+               $opciones['header'] = false;
+           }
+           
+           
+           
+          if($opciones['tipo_vista'] == "maestra"){              
               $raiz        = Convertidor::convertirEspaciosEnGuionBajo(_APP_NAME_);            
               $ruta        = $_SERVER["DOCUMENT_ROOT"]."/$raiz/"._APP_."/"._V_."/maestras/";              
               $bandera     = true;
@@ -43,7 +63,9 @@ class Vista{
               $ruta_archivo = $ruta."maestra_$nombre.php";
               
               if(!file_exists($ruta_archivo)){
+                  
                   $archivo = fopen($ruta_archivo,"w+");
+                  
                   $estructura_base  = "<!doctype html>\r\n";
                   $estructura_base .= "<html lang=\"es\">\r\n";
                   $estructura_base .= "\t<head>\r\n";
@@ -51,28 +73,43 @@ class Vista{
                   $estructura_base .= "\t\t<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\r\n";
                   $estructura_base .= "\t\t<title><?php echo strtoupper(_APP_NAME_); ?></title>\r\n";
                   $estructura_base .= "\t\t<link rel=\"shortcut icon\" type=\"image/png\" href=\"../vista/img/favicon.ico\"/>\r\n";
-                  $estructura_base .= "\t\t<?php\r\n";
-                  $estructura_base .= "\t\t\t\tforeach(Vista::cargar(\"css\") as \$css){\r\n";
-                  $estructura_base .= "\t\t\t\t\t\t echo \$css; \r\n";
-                  $estructura_base .= "\t\t\t\t} \r\n";
-                  $estructura_base .= "\t\t?> \r\n";
+                  
+                  if(count(Vista::cargar("css")) > 0){
+                     foreach(Vista::cargar("css") as $css){
+                        $estructura_base .= "\t\t$css\r\n";
+                     } 
+                  }                  
+                  
                   $estructura_base .= "\t</head>\r\n";
-                  $estructura_base .= "\t<body>\r\n";                  
-                  $estructura_base .= "\t\t<?php\r\n";
-                  $estructura_base .= "\t\t\t\tforeach(Vista::cargar(\"js\") as \$js){\r\n";
-                  $estructura_base .= "\t\t\t\t\t\t echo \$js; \r\n";
-                  $estructura_base .= "\t\t\t\t} \r\n";
-                  $estructura_base .= "\t\t?> \r\n";
+                  $estructura_base .= "\t<body>\r\n";
+                  
+                  if($opciones['header']){
+                     $estructura_base .= "\t\t<header class=\"enc-fondo enc-alt-anch\">\r\n";
+                     $estructura_base .= "\t\t</header>\r\n";
+                  }
+                  
+                  
+                  
+                  if(count(Vista::cargar("js")) > 0){
+                     foreach(Vista::cargar("js") as $js){
+                        $estructura_base .= "\t\t$js\r\n";
+                     } 
+                  }
+                  
                   $estructura_base .= "\t</body>\r\n";
                   $estructura_base .= "</html>\r\n";
               
                   fputs($archivo,$estructura_base);
               
                   fclose($archivo);
-              }
-              
-              
-    
+                  
+                  $this->creado = true;
+                  
+              }else{
+                  
+                  $this->creado = false; 
+                  
+              }             
           } 
        }catch(Exception $e){
            die($e->getMessage());

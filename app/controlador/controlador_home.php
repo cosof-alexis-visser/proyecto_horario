@@ -25,20 +25,6 @@ class Home extends Controlador{
     }
     
     public function index(){
-        $css = array(
-           $this->cargar->css("bootstrap"),
-           $this->cargar->css("base")    
-        );
-        $js = array(
-           $this->cargar->js("jquery-3.3.1.min"),
-           $this->cargar->js("bootstrap")
-        );
-        
-        new Vista("adm");
-        
-        Vista::adherir($css,"css"); 
-        Vista::adherir($js,"js");                  
-        
         $this->cargar->vista("adm");
     }
 }
