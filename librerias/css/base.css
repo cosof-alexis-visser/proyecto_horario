@@ -1,11 +1,47 @@
-html,body{
+*{
     margin  : 0;
-    padding : 0;
+    padding : 0; 
 }
-.enc-fondo{
-    background:#CCC;
+html,body{
+    height  : 100%;    
 }
-.enc-alt-anch{
-    width:100%;
-    height:150px;
+.contenedor{
+    height         : 100%;
+    width          : 100%;
+    display        : flex;
+    flex-direction : column;
 }
+.h-100{
+    height : 100%;    
+}
+.h-75{
+    height : 75%;    
+}
+.bg-color-dark-grey{
+    background : #333;
+}
+.bg-color-light-grey{
+    background : #CCC;
+}
+.bg-color-white{
+    background : #FFF;
+}
+.bg-color-green{
+    background: #688A08;
+}
+header{
+    flex:1;    
+    max-height: 150px;
+}
+main{
+    flex:2;    
+}
+footer{
+    flex:3;    
+    max-height:40px;
+}
+
+
+
+
+

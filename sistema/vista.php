@@ -85,6 +85,12 @@ class Vista{
                   
                   if($opciones['header']){
                      $estructura_base .= "\t\t<header class=\"enc-fondo enc-alt-anch\">\r\n";
+                     $estructura_base .= "\t\t\t\t<div class=\"row\">\r\n";
+                     for($i=0;$i<3;$i++){                          
+                         $estructura_base .= "\t\t\t\t\t\t<div class=\"col-md-4\">\r\n";
+                         $estructura_base .= "\t\t\t\t\t\t</div>\r\n";
+                     }                      
+                     $estructura_base .= "\t\t\t\t</div>\r\n";
                      $estructura_base .= "\t\t</header>\r\n";
                   }
                   

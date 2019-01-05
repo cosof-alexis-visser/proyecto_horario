@@ -1,4 +1,6 @@
 <?php
+    if(!isset($_POST)) header("Location:sys_config.php"); //Verifica que se estén recibiendo datos por POST
+    if(count($_POST) == 0) header("Location:sys_config.php"); //Verifica que POST efectivamente contenga datos del formulario
 
     $mensaje_success = "";
     $mensaje_error   = "";
