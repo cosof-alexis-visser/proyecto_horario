@@ -27,4 +27,5 @@ abstract class Controlador{
     public function __construct(){
         $this->cargar = new Cargador();
     }
+    
 }    

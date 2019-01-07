@@ -29,6 +29,10 @@ html,body{
 .bg-color-green{
     background: #688A08;
 }
+.txt-color-white a{
+    color:#FFF; !important
+    font-size:20px;!important
+}
 header{
     flex:1;    
     max-height: 150px;

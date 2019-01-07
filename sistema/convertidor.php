@@ -43,4 +43,6 @@ class Convertidor{
         return strtolower($strTxt);
     }
     
+    
+    
 }

@@ -177,13 +177,17 @@ class Cargador{
             
              $vista            = strtolower($nombre);
              $strDirRaiz       = Convertidor::convertirEspaciosEnGuionBajo(_APP_NAME_);
-             $ruta_vista       = $_SERVER["DOCUMENT_ROOT"]."/".$strDirRaiz."/"._APP_."/"._V_."/maestras/maestra_".$vista.".php";
+             $ruta_vista[0]    = $_SERVER["DOCUMENT_ROOT"]."/".$strDirRaiz."/"._APP_."/"._V_."/maestras/maestra_".$vista.".php";
+             $ruta_vista[1]    = $_SERVER["DOCUMENT_ROOT"]."/".$strDirRaiz."/"._APP_."/"._V_."/templates/".$vista.".php";
+
+            foreach($ruta_vista as $ruta){
+                if(Validar::existeURL($ruta)){
+                    require_once($ruta);
+                    return true;
+                }
+            } 
             
-             if(!(file_exists($ruta_vista) and is_readable($ruta_vista))){
-                 throw new Exception("Es imposible cargar la vista $vista"); 
-             }
-             
-             require_once($ruta_vista);       
+            throw new Exception("Es imposible cargar la vista $vista"); 
             
         }catch(Exception $e){
              die($e->getMessage()); 
