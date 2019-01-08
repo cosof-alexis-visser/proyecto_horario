@@ -263,6 +263,28 @@ class Cargador{
         }
     }
     
+    public static function menu($url_dir_vistas=null){
+        try{       
+            require_once realpath(dirname(__FILE__))."/configuracion.php";
+            $raiz_app   = Convertidor::convertirEspaciosEnGuionBajo(_APP_NAME_);
+            $templates  = scandir($_SERVER["DOCUMENT_ROOT"]."/".$raiz_app."/app/"._V_."/".$url_dir_vistas);
+            $arrMenu    = array();
+            for($i=2;$i<sizeof($templates);$i++){
+                $vista       = explode('_',$templates[$i]);
+                $item_menu   = explode('-',$vista[2]);
+                $controlador = $vista[3];
+                $metodo      = isset($vista[4]) ? substr($vista[4],0,stripos($vista[4],'.php')) : "";                
+                $nombre_item = ucwords(implode(' ',$item_menu));
+
+                $arrMenu[] =  "<li id='item_menu_".$vista[0]."' class='nav-item '><a class='nav-link' style='color:#FFF;font-size:24px' href='../../app/".$controlador."/".$metodo."' ><ion-icon name='".$vista[1]."'></ion-icon> ".$nombre_item."</a></li>";
+            } 
+            return $arrMenu;
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+        
+    }
+    
 }
 
-    
+   
