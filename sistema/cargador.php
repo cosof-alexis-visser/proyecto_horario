@@ -21,7 +21,8 @@
 ********************************************************************************************************************
 **/
 
-class Cargador{     
+class Cargador{
+    
     /*
      *****************************************************
      * Metodo      : autoloader
@@ -263,6 +264,16 @@ class Cargador{
         }
     }
     
+     /*
+     *****************************************************
+     * Metodo      : menu
+     * Descripción : Método encargado de crear el mmenu en la vista maestra en donde sea definido
+     * @author     : Alexis Visser <alex_vaiser@hotmail.com>
+     * creado      : 07-01-2018 
+     * @param      : String $url_dir_vistas
+     * @return     : array
+     ******************************************************
+     */    
     public static function menu($url_dir_vistas=null){
         try{       
             require_once realpath(dirname(__FILE__))."/configuracion.php";
@@ -285,6 +296,7 @@ class Cargador{
         
     }
     
+>>>>>>> Stashed changes
 }
 
-   
+    

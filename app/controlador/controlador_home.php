@@ -27,8 +27,4 @@ class Home extends Controlador{
     public function index(){
         $this->cargar->vista("adm");
     }
-    
-    public function home(){
-        $this->cargar->vista("01_play_inicio_home_home");    
-    }
 }

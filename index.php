@@ -20,8 +20,9 @@ require_once realpath(dirname(__FILE__))."/"._SYS_."/"."modelo.php";
 require_once realpath(dirname(__FILE__))."/"._SYS_."/"."controlador.php";
 require_once realpath(dirname(__FILE__))."/"._SYS_."/"."vista.php";            
 
-$base =  substr(dirname(__FILE__),-strripos(dirname(__FILE__),'\\')-1);
 $app  =  Convertidor::convertirEspaciosEnGuionBajo(_APP_NAME_);
+$base =  explode('\\',realpath(dirname(__FILE__)).'\\'.$app);
+$base =  $base[3];
 
 
 if($base != $app){
