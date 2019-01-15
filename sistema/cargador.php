@@ -295,8 +295,6 @@ class Cargador{
         }
         
     }
-    
->>>>>>> Stashed changes
 }
 
     

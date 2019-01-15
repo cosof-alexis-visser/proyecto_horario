@@ -32,16 +32,9 @@
                       <div class="col-md-2 d-none d-md-block h-100 bg-color-dark-grey">
                          <ul class="nav flex-column">
                          <?php
-                            $dir_app   = Convertidor::convertirEspaciosEnGuionBajo(_APP_NAME_);
-                            $templates = scandir($_SERVER["DOCUMENT_ROOT"]."/".$dir_app."/app/"._V_."/templates");
-                            for($i=2;$i<sizeof($templates);$i++){
-                                $vista   = explode('_',$templates[$i]);                                
-                                $controlador = $vista[2];
-                                $metodo      = isset($vista[3]) ? substr($vista[3],0,stripos($vista[3],'.php')) : "";
-                                $nombre_item = ucwords($vista[1]);
-                                
-                                echo "<li class='nav-item '><a class='nav-link' style='color:#FFF;font-size:24px' href='../../app/".$controlador."/".$metodo."' >".$nombre_item."</a></li>";
-                            }                              
+                             foreach(Cargador::menu("templates") as $paginas){
+                                  echo $paginas;
+                             }                                                  
                          ?> 
                          </ul>
                       </div>

@@ -22,33 +22,32 @@
 
 const _AMBIENT_ = 'DEV'; //Mediante esta constante se define el tipo de ambiente con el que se trabajará "DESARROLLO", "PRUEBAS", "PRODUCTIVO"
 
-
 // BASE DE DATOS
 if(_AMBIENT_ == 'DEV'){
-    const _BD_HOST_    = "localhost"; //Servidor en donde se aloja la base de datos
-    const _BD_NAME_    = "bd_valppo"; //Nombre que recibe la base de datos a la que se conectará
-    const _BD_USER_    = "root"; //Usuario mysql  que se utilizará para la conexión, este puede variar en ocasiones aunque por lo general se utiliza ROOT ya que cuenta con todos los privilegios
-    const _BD_PASS_    = ""; // Es la contraseña del usuario de mysql para efectuar la conexion
-    const _BD_CHARSET_ = "utf8"; //Es la codificación de caracteres que utilizará la base de datos para aceptar acentuación en el registro de los campos
-    const _BD_MOTOR_   = "mysql"; //Es el motor de base de datos que se empleará
+   define("_BD_HOST_","localhost"); //Servidor en donde se aloja la base de datos
+   define("_BD_NAME_","bd_valppo"); //Nombre que recibe la base de datos a la que se conectará
+   define("_BD_USER_","root"); //Usuario mysql  que se utilizará para la conexión, este puede variar en ocasiones aunque por lo general se utiliza ROOT ya que cuenta con todos los privilegios
+   define("_BD_PASS_",""); // Es la contraseña del usuario de mysql para efectuar la conexion
+   define("_BD_CHARSET_","utf8"); //Es la codificación de caracteres que utilizará la base de datos para aceptar acentuación en el registro de los campos
+   define("_BD_MOTOR_","mysql"); //Es el motor de base de datos que se empleará
 }
 
 if(_AMBIENT_ == 'TEST'){
-    const _BD_HOST_    = "10.10.4.61"; //Servidor en donde se aloja la base de datos
-    const _BD_NAME_    = "bd_valppo"; //Nombre que recibe la base de datos a la que se conectará
-    const _BD_USER_    = "valppobd"; //Usuario mysql  que se utilizará para la conexión, este puede variar en ocasiones aunque por lo general se utiliza ROOT ya que cuenta con todos los privilegios
-    const _BD_PASS_    = "aplicacion3"; // Es la contraseña del usuario de mysql para efectuar la conexion
-    const _BD_CHARSET_ = "utf8"; //Es la codificación de caracteres que utilizará la base de datos para aceptar acentuación en el registro de los campos
-    const _BD_MOTOR_   = "mysql"; //Es el motor de base de datos que se empleará
+   define("_BD_HOST_","10.10.4.61"); //Servidor en donde se aloja la base de datos
+   define("_BD_NAME_","bd_valppo"); //Nombre que recibe la base de datos a la que se conectará
+   define("_BD_USER_","valppobd"); //Usuario mysql  que se utilizará para la conexión, este puede variar en ocasiones aunque por lo general se utiliza ROOT ya que cuenta con todos los privilegios
+   define("_BD_PASS_","aplicacion3"); // Es la contraseña del usuario de mysql para efectuar la conexion
+   define("_BD_CHARSET_","utf8"); //Es la codificación de caracteres que utilizará la base de datos para aceptar acentuación en el registro de los campos
+   define("_BD_MOTOR_","mysql"); //Es el motor de base de datos que se empleará   
 }
 
 if(_AMBIENT_ == 'PROD'){
-    const _BD_HOST_    = "10.10.4.36"; //Servidor en donde se aloja la base de datos
-    const _BD_NAME_    = "bd_valppo"; //Nombre que recibe la base de datos a la que se conectará
-    const _BD_USER_    = "valppobd"; //Usuario mysql  que se utilizará para la conexión, este puede variar en ocasiones aunque por lo general se utiliza ROOT ya que cuenta con todos los privilegios
-    const _BD_PASS_    = "aplicacion3"; // Es la contraseña del usuario de mysql para efectuar la conexion
-    const _BD_CHARSET_ = "utf8"; //Es la codificación de caracteres que utilizará la base de datos para aceptar acentuación en el registro de los campos
-    const _BD_MOTOR_   = "mysql"; //Es el motor de base de datos que se empleará
+   define("_BD_HOST_","10.10.4.36"); //Servidor en donde se aloja la base de datos
+   define("_BD_NAME_","bd_valppo"); //Nombre que recibe la base de datos a la que se conectará
+   define("_BD_USER_","valppobd"); //Usuario mysql  que se utilizará para la conexión, este puede variar en ocasiones aunque por lo general se utiliza ROOT ya que cuenta con todos los privilegios
+   define("_BD_PASS_","aplicacion3"); // Es la contraseña del usuario de mysql para efectuar la conexion
+   define("_BD_CHARSET_","utf8"); //Es la codificación de caracteres que utilizará la base de datos para aceptar acentuación en el registro de los campos
+   define("_BD_MOTOR_","mysql"); //Es el motor de base de datos que se empleará 
 }
 
 //CUENTA ADMINISTRADORA
