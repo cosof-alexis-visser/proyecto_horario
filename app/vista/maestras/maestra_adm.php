@@ -5,8 +5,12 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1">
 		<title><?php echo strtoupper(_APP_NAME_); ?></title>
 		<link rel="shortcut icon" type="image/png" href="../vista/img/favicon.ico"/>
-		<link href='../../librerias/css/bootstrap.css' type='text/css' rel='stylesheet'>
-		<link href='../../librerias/css/base.css' type='text/css' rel='stylesheet'>
+		<?php 
+            //die(print_r(Vista::cargar("css"),true));
+            foreach(Vista::cargar("css") as $css){
+                echo $css;
+            }
+        ?>
 	</head>
 	<body>
         <div class="contenedor">	    
@@ -30,7 +34,7 @@
                <div class="container-fluid h-100">
                    <div class="row h-100">
                       <div class="col-md-2 d-none d-md-block h-100 bg-color-dark-grey">
-                         <ul class="nav flex-column">
+                         <ul class="nav flex-column w-100">
                          <?php
                              foreach(Cargador::menu("templates") as $paginas){
                                   echo $paginas;
@@ -48,9 +52,11 @@
                 
             </footer>
         </div>
-        <script src='../../librerias/js/jquery-3.3.1.min.js' type='text/javascript'></script>
-		<script src='../../librerias/js/bootstrap.js' type='text/javascript'></script>
-		<script src="https://unpkg.com/ionicons@4.5.0/dist/ionicons.js"></script>
-		<script src='../../librerias/js/base.js' type='text/javascript'></script>
+        <script src="https://unpkg.com/ionicons@4.5.0/dist/ionicons.js"></script>
+        <?php
+            foreach(Vista::cargar("js") as $js){
+                echo $js;
+            }
+        ?>
 	</body>
 </html>

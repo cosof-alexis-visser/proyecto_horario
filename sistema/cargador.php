@@ -287,7 +287,7 @@ class Cargador{
                 $metodo      = isset($vista[4]) ? substr($vista[4],0,stripos($vista[4],'.php')) : "";                
                 $nombre_item = ucwords(implode(' ',$item_menu));
 
-                $arrMenu[] =  "<li id='item_menu_".$vista[0]."' class='nav-item '><a class='nav-link' style='color:#FFF;font-size:24px' href='../../app/".$controlador."/".$metodo."' ><ion-icon name='".$vista[1]."'></ion-icon> ".$nombre_item."</a></li>";
+                $arrMenu[] =  "<li id='item_menu_".$vista[0]."' class='nav-item'><a class='nav-link' style='color:#FFF;font-size:24px' href='../../app/".$controlador."/".$metodo."' ><ion-icon name='".$vista[1]."'></ion-icon> ".$nombre_item."</a></li>";
             } 
             return $arrMenu;
         }catch(Exception $e){

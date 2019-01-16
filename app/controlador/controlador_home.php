@@ -18,13 +18,30 @@
 ********************************************************************************************************************
 **/
 
-class Home extends Controlador{  
+class Home extends Controlador{     
     
     public function __construct(){
         parent::__construct(); //Construye un controlador padre       
     }
     
     public function index(){
+        //Cargo los css en la vista maestra adm
+        $css = array(
+            $this->cargar->css("bootstrap"),
+            $this->cargar->css("base")
+        );
+        
+        //Cargo los js en la vista maestra adm
+        $js = array(    
+            $this->cargar->js("jquery-3.3.1.min"),
+            $this->cargar->js("bootstrap"),
+            $this->cargar->js("base")            
+        );        
+        
+        Vista::adherir($css,"css");
+        Vista::adherir($js,"js");
+        
         $this->cargar->vista("adm");
-    }
+    }    
+   
 }
