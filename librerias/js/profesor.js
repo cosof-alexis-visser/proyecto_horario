@@ -7,7 +7,7 @@ $(document).ready(function(e){
        if($(this)[0].files[0]){    
          $('#nombre_archivo').val($(this)[0].files[0]["name"]);
        }
-    })
+    }) 
     
     $("#form_load_CSV").on("submit",function(e){
         e.preventDefault();
@@ -44,10 +44,10 @@ $(document).ready(function(e){
                     $("#mensaje").addClass("alert-danger");
                 }                
                 
-                $("#mensaje").html("Error de comunicación con el servidor. Favor ponerse en contacto con soporte");
+                $("#mensaje").html("Error de comunicación con el servidor. Favor ponerse en contacto con soporte").show("fast");
             },
             success:function(response){
-                
+                alert(response.totalArchivo)
                 $("#btn_cargar_csv").attr("disabled",false);
                 
                 if($("#mensaje").hasClass("alert-success")){
@@ -59,7 +59,11 @@ $(document).ready(function(e){
                 }
                 
                 if(response.correcto){
+                    
                     $("#mensaje").addClass("alert-success").html(response.msgCorrecto).show("fast");
+                    $("#c_prof_total").val(response.totalArchivo);
+                    $("#c_prof_reg").val(response.cantidad_procesado);
+                    console.log(response);
                 }
                 if(response.error){
                     $("#mensaje").addClass("alert-danger").html(response.msgError).show("fast");

@@ -106,9 +106,10 @@ class Cargador{
     public function modelo($nombre){
         try{             
             
-             $clase  = strtolower($nombre);
+             $clase       = strtolower($nombre);
+             $nombre      = substr($clase,3,strlen($clase));
              $strDirRaiz  = Convertidor::convertirEspaciosEnGuionBajo(_APP_NAME_);
-             $ruta_modelo = $_SERVER["DOCUMENT_ROOT"]."/".$strDirRaiz."/"._APP_."/"._M_."/"._M_."_".$clase.".php";
+             $ruta_modelo = $_SERVER["DOCUMENT_ROOT"]."/".$strDirRaiz."/"._APP_."/"._M_."/"._M_."_".$nombre.".php";
              
              if(!file_exists($ruta_modelo) and is_readable($ruta_controlador)){
                  throw new Exception("Es imposible encontrar el modelo $clase"); 

@@ -87,28 +87,13 @@ abstract class Modelo extends BaseDatos{
      ******************************************************
      */
     public function insertarMultiple($arrDatos,$_tabla){        
-        try{ 
-           if(!is_array($arrDatos)){
-               throw new Exception("Debe ingresar un arreglo de datos en el primer parámetro");  
-           } 
-           
-            if(count($arrDatos) == 0){
-               throw new Exception("El primer parámetro debe ser un arreglo que contenga datos"); 
-            }
-            
-            if(empty($_tabla)){
-                throw new Exception("Debe definir el nombre de la tabla en el segundo parámetro");
-            }
-            
-            if(!is_string($_tabla)){
-                throw new Exception("El segundo parámetro debe ser una cadena");
-            }
-            
+        try{            
+            $inicio     = microtime(true);
             $claves     = null;
             $str_claves = null;
             $query      = "insert into $_tabla";
             $bandera    = true;
-            $contar     = 0;
+            $contar     = 0;            
             $valores    = array();
             
             foreach($arrDatos as $fila){
@@ -120,9 +105,7 @@ abstract class Modelo extends BaseDatos{
                    throw new Exception("El arreglo ingresado no contiene arreglos asociativos"); 
                 }
                 
-                $tmp = implode(',',array_values($fila));
                 
-                array_push($valores,$tmp);
                 
                 $claves      = is_null($claves)     ? array_keys($fila)    : $claves;
                         
@@ -131,6 +114,7 @@ abstract class Modelo extends BaseDatos{
                 
                 foreach((array) $fila as $valor){
                     array_push($arrValores, '?');
+                    $valores[] = $valor;
                 }
                 
                 $strValores  = implode(',',$arrValores);
@@ -146,16 +130,23 @@ abstract class Modelo extends BaseDatos{
                     $contar++;
                 }                    
                 $query .= "($strValores)";
-            } 
-            
+            }
+           
+                      
             $this->ejecutarConsulta($query,$valores);
             
+            $final  = microtime(true);
+            $tiempo = round($final - $inicio,2); 
+            
             if($this->transaccionRealizada()){
-                Mensaje::enviar("La operación se ha realizado con éxito");
+                return array(
+                    "duracion"           => $tiempo,
+                    "cantidad_procesado" => count($arrDatos)
+                );
             }
             
         }catch(Exception $e){
-           Mensaje::enviar($e->getMessage()); 
+           return false; 
         }    
     }  
     

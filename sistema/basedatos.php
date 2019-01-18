@@ -101,7 +101,8 @@ class BaseDatos extends PDO{
         }catch(Exception $error){
             die($error->getMessage());   
         }
-    }
+    }  
+    
     
     /*
      *****************************************************
@@ -115,6 +116,9 @@ class BaseDatos extends PDO{
     public function transaccionRealizada(){
 		return $this->_consulta->rowCount() > 0;
 	}
+    
+    
+    
     
      /*
      *****************************************************
