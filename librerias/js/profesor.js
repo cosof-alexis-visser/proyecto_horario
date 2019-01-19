@@ -1,14 +1,12 @@
-
-
-
-
-$(document).ready(function(e){    
+$(document).ready(function(e){ 
+    //Controla la información que se despliega en el input file de la carga de CSV
     $('#adjuntarCSV').on("change",function(){  
        if($(this)[0].files[0]){    
          $('#nombre_archivo').val($(this)[0].files[0]["name"]);
        }
-    }) 
+    });    
     
+    //Envía los datos para ser procesados cuando se presiona el botón cargar CSV
     $("#form_load_CSV").on("submit",function(e){
         e.preventDefault();
         
@@ -46,8 +44,7 @@ $(document).ready(function(e){
                 
                 $("#mensaje").html("Error de comunicación con el servidor. Favor ponerse en contacto con soporte").show("fast");
             },
-            success:function(response){
-                alert(response.totalArchivo)
+            success:function(response){                
                 $("#btn_cargar_csv").attr("disabled",false);
                 
                 if($("#mensaje").hasClass("alert-success")){
@@ -59,11 +56,16 @@ $(document).ready(function(e){
                 }
                 
                 if(response.correcto){
-                    
+                    $("#form_load_CSV")[0].reset();
                     $("#mensaje").addClass("alert-success").html(response.msgCorrecto).show("fast");
                     $("#c_prof_total").val(response.totalArchivo);
                     $("#c_prof_reg").val(response.cantidad_procesado);
-                    console.log(response);
+                    $("#op_demora").val(response.duracion);
+                    $("#c_error").val(response.cantError);
+                    $("#lista_errores").html("");
+                    $.each(response.arrErrores,function(k,v){                        
+                        $("<tr/>").append($("<td/>",{'html':v[0],'style':'padding:10px;color:#F00;text-align:center'})).append($("<td/>",{'html':v[1],'colspan':3,'style':'padding:10px;color:#F00'})).appendTo("#lista_errores");
+                    })
                 }
                 if(response.error){
                     $("#mensaje").addClass("alert-danger").html(response.msgError).show("fast");
@@ -71,5 +73,12 @@ $(document).ready(function(e){
             }
             
         })       
+    });
+    
+    //Construye la tabla con los datos del profesor que posteriormente será consultada
+    $("#btn_ver_docentes").on("click",function(e){
+        e.preventDefault();
+        Cargar.modal("","probando");
     })
+    
  })

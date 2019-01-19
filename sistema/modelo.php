@@ -140,9 +140,11 @@ abstract class Modelo extends BaseDatos{
             
             if($this->transaccionRealizada()){
                 return array(
-                    "duracion"           => $tiempo,
+                    "duracion"           => $tiempo.' seg',
                     "cantidad_procesado" => count($arrDatos)
                 );
+            }else{
+                return false;
             }
             
         }catch(Exception $e){
@@ -221,4 +223,29 @@ abstract class Modelo extends BaseDatos{
             Mensaje::enviar($e->getMessage()); 
         }
     }
+    
+    public function vaciar($_tabla){
+        try{
+           if(empty($_tabla)){
+                throw new Exception("Debe indicar la tabla desde donde obtener los datos");
+            } 
+            
+            $query = "SET FOREIGN_KEY_CHECKS = 0; TRUNCATE table $_tabla; SET FOREIGN_KEY_CHECKS = 1;";
+            
+            $this->ejecutarConsulta($query);
+            
+            if($this->transaccionRealizada()){
+                Mensaje::enviar("La transacción se ha realizado con éxito");
+            }
+        }catch(Exception $e){
+             Mensaje::enviar($e->getMessage()); 
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
 }                         

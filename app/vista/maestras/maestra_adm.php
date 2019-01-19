@@ -4,13 +4,14 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1">
 		<title><?php echo strtoupper(_APP_NAME_); ?></title>
-		<link rel="shortcut icon" type="image/png" href="../vista/img/favicon.ico"/>
+		<link rel="shortcut icon" type="image/png" href="../vista/img/favicon.ico"/>			
 		<?php 
             //die(print_r(Vista::cargar("css"),true));
             foreach(Vista::cargar("css") as $css){
                 echo $css;
             }
-        ?>
+        ?> 
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" type="text/css">     
 	</head>
 	<body>
         <div class="contenedor">	    
@@ -52,11 +53,16 @@
                 
             </footer>
         </div>
-        <script src="https://unpkg.com/ionicons@4.5.0/dist/ionicons.js"></script>
+        <!-------------------------------------------------------- Aqui se carga el modal solicitado -------------------------------------------------------------------> 
+        <div id="cargar_modal">
+            
+        </div>           
         <?php
             foreach(Vista::cargar("js") as $js){
                 echo $js;
             }
-        ?>
+        ?>       
+        <script src="https://unpkg.com/ionicons@4.5.0/dist/ionicons.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>  
 	</body>
 </html>

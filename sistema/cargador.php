@@ -181,6 +181,7 @@ class Cargador{
              $strDirRaiz       = Convertidor::convertirEspaciosEnGuionBajo(_APP_NAME_);
              $ruta_vista[0]    = $_SERVER["DOCUMENT_ROOT"]."/".$strDirRaiz."/"._APP_."/"._V_."/maestras/maestra_".$vista.".php";
              $ruta_vista[1]    = $_SERVER["DOCUMENT_ROOT"]."/".$strDirRaiz."/"._APP_."/"._V_."/templates/".$vista.".php";
+             $ruta_vista[2]    = $_SERVER["DOCUMENT_ROOT"]."/".$strDirRaiz."/"._APP_."/"._V_."/complementos/".$vista.".php";
 
             foreach($ruta_vista as $ruta){
                 if(Validar::existeURL($ruta)){

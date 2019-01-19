@@ -23,6 +23,16 @@ class Profesor extends Controlador{
         $this->cargar->vista("03_school_profesores_profesor_");
     }
     
+    public function listar(){
+        $javascript = array(
+            $this->cargar->js("profesor")
+        );
+        foreach($javascript as $js){
+            echo $js;
+        }
+        $this->cargar->vista("05_school_profesores-registrados_profesor_listar");
+    }
+    
     public function cargarCSV(){
         $error       = false;
         $correcto    = false;
@@ -34,6 +44,7 @@ class Profesor extends Controlador{
             $extension   = explode('.',$archivo["name"]);
             $extension   = $extension[sizeof($extension)-1]; //detecta la última celda del arreglo y entrega la información de la extensión
             $linea       = 0;
+            $item        = 0;
             $extensiones = array("csv");
             $profesores  = array();
             $mensajes    = array(
@@ -63,7 +74,9 @@ class Profesor extends Controlador{
                         //Valida que a lo menos las primeras 5 celdas contengan información
                         for($i=0;$i<5;$i++){
                            if(empty($datos[$i])){
-                               $errorLinea[$linea] = "Registro ".($linea + 1).": ".$mensajes[$i];
+                               $item++;
+                               $errorLinea[$item][] = ($linea + 1);
+                               $errorLinea[$item][] = $mensajes[$i];
                                $bandera = false;
                                break;
                            } 
