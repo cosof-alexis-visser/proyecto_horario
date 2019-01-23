@@ -78,7 +78,36 @@ $(document).ready(function(e){
     //Construye la tabla con los datos del profesor que posteriormente será consultada
     $("#btn_ver_docentes").on("click",function(e){
         e.preventDefault();
-        Cargar.modal("","probando");
+        Cargar.modal("../../app/profesor/ver","profesores",90);
+        setTimeout(function(){
+            $.post("../../app/profesor/listarTodos",{},function(response){
+             var columnas = [{
+                        title: "Código"
+                      }, {
+                        title: "RUT"
+                      }, {
+                        title: "Nombre"
+                      }, {
+                        title: "Apellidos"
+                      }, {
+                        title: "Correo 1"
+                      }, {
+                        title: "Correo 2"
+                      }, {
+                        title: "Fono 1"
+                      }, {
+                        title: "Fono 2"
+                      }];    
+               $("#listado_profesores").DataTable({
+                   data    : response,
+                   columns : columnas
+               })
+                /*$.each(response,function(k,v){
+                   console.log(v.nombres) 
+                })//alert(response);
+                ;*/
+            },'json')
+        },200)
     })
     
  })

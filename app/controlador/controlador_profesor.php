@@ -23,14 +23,20 @@ class Profesor extends Controlador{
         $this->cargar->vista("03_school_profesores_profesor_");
     }
     
-    public function listar(){
+    public function ver(){
         $javascript = array(
             $this->cargar->js("profesor")
         );
         foreach($javascript as $js){
             echo $js;
         }
-        $this->cargar->vista("05_school_profesores-registrados_profesor_listar");
+        $this->cargar->vista("profesores");
+    }
+    
+    public function listarTodos(){       
+        $profesores = $this->_DAOProfesor->listarTodos();
+        $json       = json_encode($profesores);
+        echo $json ;
     }
     
     public function cargarCSV(){

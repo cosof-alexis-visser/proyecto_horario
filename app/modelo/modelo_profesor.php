@@ -34,4 +34,8 @@ class DAOProfesor extends Modelo{
          */
         return $this->insertarMultiple($profesores,$this->_tabla);
     }
+    
+    public function listarTodos(){
+        return $this->obtenerTodos($this->_tabla);
+    }
 }
