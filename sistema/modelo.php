@@ -31,51 +31,45 @@ abstract class Modelo extends BaseDatos{
      * creado      : 17-12-2018
      ******************************************************
      */
-    public function insertar($arrDatos,$_tabla){      
-       try{        
-            if(!is_array($arrDatos)){
-               throw new Exception("Debe ingresar un arreglo de datos en el primer parámetro");  
-            }
-            
-            if(count($arrDatos) == 0){
-               throw new Exception("El primer parámetro debe ser un arreglo que contenga datos"); 
-            }
-           
-            if(array_keys($arrDatos) === range(0,count($arrDatos) - 1)){
-               throw new Exception("El primer parámetro debe ser un arreglo asociativo"); 
-            }
-            
-            if(empty($_tabla)){
-                throw new Exception("Debe definir el nombre de la tabla en el segundo parámetro");
-            }
-            
-            if(!is_string($_tabla)){
-                throw new Exception("El segundo parámetro debe ser una cadena");
-            }         
-           
-            $claves      = array_keys($arrDatos);
-            $valores     = array_values($arrDatos);        
-            $str_claves  = implode(',',$claves);
-            $arrValores  = array();
+    public function insertar($arrDatos,$_tabla){         
+        if(!is_array($arrDatos)){
+           die("Debe ingresar un arreglo de datos en el primer parámetro");  
+        }
 
-            foreach((array) $arrDatos as $valor){
-                array_push($arrValores, '?');
-            }
+        if(count($arrDatos) == 0){
+           die("El primer parámetro debe ser un arreglo que contenga datos"); 
+        }
 
-            $strValores  = implode(',',$arrValores);
+        if(array_keys($arrDatos) === range(0,count($arrDatos) - 1)){
+           die("El primer parámetro debe ser un arreglo asociativo"); 
+        }
 
-            $query = "insert into $_tabla($str_claves) values($strValores)";
-            
-            $this->ejecutarConsulta($query,$valores);
-           
-            if($this->transaccionRealizada()){
-                Mensaje::enviar("La operación se ha realizado con éxito");
-            }
-           
-       }catch(Exception $e){
-           Mensaje::enviar($e->getMessage());
-       }
-        
+        if(empty($_tabla)){
+            die("Debe definir el nombre de la tabla en el segundo parámetro");
+        }
+
+        if(!is_string($_tabla)){
+            die("El segundo parámetro debe ser una cadena");
+        }         
+
+        $claves      = array_keys($arrDatos);
+        $valores     = array_values($arrDatos);        
+        $str_claves  = implode(',',$claves);
+        $arrValores  = array();
+
+        foreach($arrDatos as $valor){
+            array_push($arrValores, '?');
+        }
+
+        $strValores  = implode(',',$arrValores);
+
+        $query = "insert into $_tabla($str_claves) values($strValores)";
+
+        $this->ejecutarConsulta($query,$valores);
+
+        if($this->transaccionRealizada()){
+            Mensaje::enviar("La operación se ha realizado con éxito");
+        }        
     }
     
     /*
@@ -87,141 +81,149 @@ abstract class Modelo extends BaseDatos{
      ******************************************************
      */
     public function insertarMultiple($arrDatos,$_tabla){        
-        try{            
-            $inicio     = microtime(true);
-            $claves     = null;
-            $str_claves = null;
-            $query      = "insert into $_tabla";
-            $bandera    = true;
-            $contar     = 0;            
-            $valores    = array();
-            
-            foreach($arrDatos as $fila){
-                
-                if(!is_array($fila)){
-                   throw new Exception("El primer parámetro debe ser un arreglo que contenga datos"); 
-                }
-                if(array_keys($fila) === range(0,count($fila) - 1)){
-                   throw new Exception("El arreglo ingresado no contiene arreglos asociativos"); 
-                }
-                
-                
-                
-                $claves      = is_null($claves)     ? array_keys($fila)    : $claves;
-                        
-                $str_claves  = is_null($str_claves) ? implode(',',$claves) : $str_claves;
-                $arrValores  = array();
-                
-                foreach((array) $fila as $valor){
-                    array_push($arrValores, '?');
-                    $valores[] = $valor;
-                }
-                
-                $strValores  = implode(',',$arrValores);
-                
-                if($bandera){
-                    $query .= "($str_claves) values";
-                    $bandera = false;
-                }
-                
-                if($contar > 0){
-                    $query .= ',';
-                }else{
-                    $contar++;
-                }                    
-                $query .= "($strValores)";
+                   
+        $inicio     = microtime(true);
+        $claves     = null;
+        $str_claves = null;
+        $query      = "insert into $_tabla";
+        $bandera    = true;
+        $contar     = 0;            
+        $valores    = array();
+
+        foreach($arrDatos as $fila){
+
+            if(!is_array($fila)){
+               die("El primer parámetro debe ser un arreglo que contenga datos"); 
             }
-           
-                      
-            $this->ejecutarConsulta($query,$valores);
-            
-            $final  = microtime(true);
-            $tiempo = round($final - $inicio,2); 
-            
-            if($this->transaccionRealizada()){
-                return array(
-                    "duracion"           => $tiempo.' seg',
-                    "cantidad_procesado" => count($arrDatos)
-                );
+            if(array_keys($fila) === range(0,count($fila) - 1)){
+               die("El arreglo ingresado no contiene arreglos asociativos"); 
+            }
+
+
+
+            $claves      = is_null($claves)     ? array_keys($fila)    : $claves;
+
+            $str_claves  = is_null($str_claves) ? implode(',',$claves) : $str_claves;
+            $arrValores  = array();
+
+            foreach((array) $fila as $valor){
+                array_push($arrValores, '?');
+                $valores[] = $valor;
+            }
+
+            $strValores  = implode(',',$arrValores);
+
+            if($bandera){
+                $query .= "($str_claves) values";
+                $bandera = false;
+            }
+
+            if($contar > 0){
+                $query .= ',';
             }else{
-                return false;
-            }
-            
-        }catch(Exception $e){
-           return false; 
-        }    
+                $contar++;
+            }                    
+            $query .= "($strValores)";
+        }
+
+
+        $this->ejecutarConsulta($query,$valores);
+
+        $final  = microtime(true);
+        $tiempo = round($final - $inicio,2); 
+
+        if($this->transaccionRealizada()){
+            return array(
+                "duracion"           => $tiempo.' seg',
+                "cantidad_procesado" => count($arrDatos)
+            );
+        }else{
+            return false;
+        }          
     }  
     
      /*
      *****************************************************
+     * Metodo      : obtenerPor
+     * Descripción : obtiene todos los registros filtrados por algún campo
+     * @author     : Alexis Visser <alex_vaiser@hotmail.com>
+     * creado      : 21-12-2018
+     ******************************************************
+     */
+    public function obtenerPor($arrCampo,$_tabla,$_ordenar_por = null,$_orden_desc = false){        
+        
+        if(empty($_tabla)){
+           die("Debe indicar la tabla desde donde desea obtener los datos");
+        }
+
+        if(!is_array($arrCampo)){
+           die("El primer parámetro debe ser un arreglo de datos"); 
+        }
+
+        if(count($arrCampo) > 1 and count($arrCampo) == 0){
+            die("El primer parámetro debe contener una celda");
+        }
+
+        if(array_keys($arrCampo) === range(0,count($arrCampo) - 1)){
+           die("El primer parámetro debe ser un arreglo asociativo"); 
+        }
+
+        $_key  = array_keys($arrCampo);
+
+
+        $query = "select * from $_tabla where $_key = ?";
+
+        if(!is_null($_ordenar_por)){
+            $query .= " order by $_ordenar_por";
+        }
+
+        if($_orden_desc){
+            $query .= " desc";
+        }
+        $param = array_values($arrCampo);
+
+        $this->ejecutarConsulta($query);
+
+        if($this->transaccionRealizada()){                           
+          return  $this->getAllResultados();                       
+        }else{
+           return null; 
+        }            
+        
+    }
+    
+    /*
+     *****************************************************
      * Metodo      : obtenerTodos
-     * Descripción : obtiene todos los registros de una tabla
+     * Descripción : obtiene todos los registros de la tabla señalada
      * @author     : Alexis Visser <alex_vaiser@hotmail.com>
      * creado      : 21-12-2018
      ******************************************************
      */
     public function obtenerTodos($_tabla,$_ordenar_por = null,$_orden_desc = false){        
-        try{
-            if(empty($_tabla)){
-                throw new Exception("Debe indicar la tabla desde donde obtener los datos");
-            }
-            
-            $query = "select * from $_tabla";
-            
-            if(!is_null($_ordenar_por)){
-                $query .= " order by $_ordenar_por";
-            }
-            
-            if($_orden_desc){
-                $query .= " $_orden_desc";
-            }
-            
-            $this->ejecutarConsulta($query);
-            
-            if($this->transaccionRealizada()){
-               $obj = $this->getAllResultados();    
-               return  (object) $obj; 
-            }else{
-               return null; 
-            }            
-        }catch(Exception $e){
-            Mensaje::enviar($e->getMessage()); 
+        
+        if(empty($_tabla)){
+            die("Debe indicar la tabla desde donde obtener los datos");
+        }          
+
+        $query = "select * from $_tabla";
+
+        if(!is_null($_ordenar_por)){
+            $query .= " order by $_ordenar_por";
         }
-    }
-    
-    /*
-     *****************************************************
-     * Metodo      : obtenerPorId
-     * Descripción : obtiene un registro por id de una tabla
-     * @author     : Alexis Visser <alex_vaiser@hotmail.com>
-     * creado      : 21-12-2018
-     ******************************************************
-     */
-    public function obtenerPorId($_tabla,$_id){        
-        try{
-            if(empty($_tabla)){
-                throw new Exception("Debe indicar la tabla desde donde obtener los datos");
-            }
-            
-            if(empty($_id)){
-                throw new Exception("Debe indicar el id para obtener los datos");
-            }
-            
-            $query = "select * from $_tabla where id = ?";
-            
-            $param = array($_id);
-            
-            $this->ejecutarConsulta($query,$param);
-            
-            if($this->transaccionRealizada()){
-               $obj = $this->getAllResultados();    
-               return  (object) $obj->fila_0; 
-            }else{
-               return null; 
-            }            
-        }catch(Exception $e){
-            Mensaje::enviar($e->getMessage()); 
-        }
+
+        if($_orden_desc){
+            $query .= " desc";
+        }            
+
+        $this->ejecutarConsulta($query);
+
+        if($this->transaccionRealizada()){
+           return $this->getAllResultados(); 
+        }else{
+           return null; 
+        }            
+        
     }
     
     public function vaciar($_tabla){
